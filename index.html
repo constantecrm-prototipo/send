@@ -135,6 +135,10 @@ td.num,th.num{text-align:right}
 .nasc-row input{flex:1 1 auto;min-width:0}
 .age-chip{flex:0 0 auto;font-family:var(--display);font-size:20px;letter-spacing:.02em;color:var(--brand);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:7px 14px;white-space:nowrap}
 .age-chip.bad{color:var(--neg)}
+img.sim-img{display:block;width:100%;max-width:560px;height:auto;margin:0 auto 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);min-height:60px}
+img.sim-img:not([src]){visibility:hidden;min-height:0;height:0;margin:0;border:0}
+details.txtalt{margin-top:6px}
+details.txtalt summary{cursor:pointer;color:var(--brand);font-weight:700;padding:8px 0}
 textarea.script{width:100%;resize:vertical;min-height:110px;color:inherit}
 pre.script,textarea.script{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:14px;margin:0 0 10px;font-family:var(--body);font-size:13px;line-height:1.7;overflow-wrap:anywhere}
 .disc{font-size:12px;color:var(--muted);border-left:3px solid var(--peri);padding-left:12px}
@@ -284,8 +288,8 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
 </header>
 
 <div class="mobbar" id="mobbar" hidden>
-  <button class="btn primary" id="mb-send" type="button">Enviar simulação</button>
-  <button class="btn" id="mb-copy" type="button">Copiar tudo</button>
+  <button class="btn primary" id="mb-send" type="button">Enviar imagem</button>
+  <button class="btn" id="mb-copy" type="button">Baixar</button>
   <button class="btn" id="mb-save" type="button">Salvar</button>
 </div>
 
@@ -353,14 +357,22 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
           <button class="btn" id="b-copy-hi" type="button">Copiar saudação</button>
           <button class="btn" id="b-greet-reset" type="button" hidden>Restaurar texto padrão</button>
         </div>
-        <div class="sect">Simulação</div>
+        <div class="sect">Simulação em imagem</div>
+        <img id="sim-img" class="sim-img" alt="Prévia da simulação em imagem">
+        <div class="actions" style="margin-bottom:10px">
+          <button class="btn primary" id="b-img-share" type="button">Compartilhar imagem</button>
+          <button class="btn" id="b-img-dl" type="button">Baixar imagem</button>
+          <button class="btn" id="b-img-copy" type="button">Copiar imagem</button>
+        </div>
+        <details class="txtalt"><summary>Versão em texto</summary>
         <pre class="script" id="script"></pre>
         <div class="actions">
           <a class="btn primary" id="a-wa-sim" target="_blank" rel="noopener" href="#" aria-disabled="true">Enviar simulação</a>
           <button class="btn" id="b-copy" type="button">Copiar simulação</button>
           <button class="btn" id="b-copy-all" type="button">Copiar saudação + simulação</button>
-          <button class="btn" id="b-save" type="button">Salvar proposta</button>
         </div>
+        </details>
+        <div class="actions" style="margin-top:10px"><button class="btn" id="b-save" type="button">Salvar proposta</button></div>
       </div>
     </div>
 
@@ -722,7 +734,7 @@ function simular(){
   ['res','fin','scr'].forEach(function(id){$(id).hidden=!ready});
   $('inel').hidden=true;
   last=null;
-  if(!ready)return;
+  if(!ready){schedImg();return}
 
   var idade=calcIdade(nasc);
   if(idade>=80){$('inel').hidden=false;['res','fin','scr'].forEach(function(id){$(id).hidden=true});return}
@@ -742,7 +754,7 @@ function simular(){
   var cu=curUnit();var deT=(cu&&Math.abs(cu.valor-porVal)<1&&cu.de>cu.valor)?cu.de:0;
   last={jive:Object.assign({},jive),por:porVal,extra:extra,ddMode:ddMode,ddRaw:ddOpen?$('s-dd').value:'',de:deT,nome:$('s-cliente').value.trim(),tel:$('s-tel').value.trim(),unidade:selName(),valor:valor,ent:ent,saldo:saldo,n:n,taxa:taxa,idade:idade,nasc:nasc,area:(cu&&cu.area)||0,
     hosp:hosp,rph:rph,rec:rec,cen:($('s-rph').value&&parseBRL($('s-rph').value)>0)?'manual':renCen,limp:limp,oper:oper,gest:gest,custos:custos,pPrice:pPrice,s1:s1,sN:sN,totPrice:totPrice,totSac:totSac,liq:liq,yieldA:yieldA,payback:payback,fluxoP:fluxoP,fluxoS:fluxoS,coc:coc};
-  render(last);
+  render(last);schedImg();
 }
 function selName(){var s=$('s-unidade');var o=s.options[s.selectedIndex];return o&&o.value?o.textContent.split(' · ')[0]:'a unidade'}
 
@@ -965,6 +977,104 @@ function setMobile(on){
   try{localStorage.setItem('send-cooliving-mode',mobMode?'mob':'desk')}catch(e){}
   window.scrollTo(0,0);
 }
+
+/* ---------- simulação em imagem (canvas) ---------- */
+var IMG_FONT_D="Anton,'Arial Narrow',Impact,sans-serif", IMG_FONT_B="Montserrat,'Segoe UI',Roboto,Arial,sans-serif";
+function conclusaoItens(r){
+  var o=[];
+  if(r.area>0){
+    var m2=r.valor/r.area, refTot=REF_M2*r.area, eco=refTot-r.valor;
+    o.push('Menor m² da região: '+toBRL(m2).replace(',00','')+'/m² ('+r.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²).');
+    o.push('Lançamentos na planta partem de '+toBRL(REF_M2).replace(',00','')+'/m², com entrega só entre 2028 e 2031.');
+    if(eco>0)o.push('A '+toBRL(REF_M2).replace(',00','')+'/m² custaria '+toBRL(refTot)+': aqui, '+toBRL(eco)+' a menos ('+pct(eco/refTot*100,1)+').');
+  }else o.push('Menor m² da região; lançamentos na planta partem de '+toBRL(REF_M2).replace(',00','')+'/m², com entrega só entre 2028 e 2031.');
+  if(r.liq>0)o.push('Perspectiva de renda de '+toBRL(r.liq)+' por mês ('+pct(r.yieldA,2)+' ao ano), enquanto na planta o capital fica parado até a entrega.');
+  o.push('Potencial de valorização conforme o m² se aproxima dos valores dos novos lançamentos.');
+  return o;
+}
+function drawSim(r){
+  var W=1080,P=48,CW=W-2*P,c=document.createElement('canvas');c.width=W;c.height=3600;
+  var x=c.getContext('2d');
+  var NAVY='#14304F',BLUE='#2F6FB8',INK='#262D34',MUT='#69747F',LINE='#DCE3E9',BG='#F2F6F9',POS='#1E7D4F',POSBG='#DDF1E6',NEG='#B8372C',NEGBG='#FBE3E0';
+  x.fillStyle=BG;x.fillRect(0,0,W,c.height);
+  function rr(px,py,w,h,rad,fill,stroke){x.beginPath();x.moveTo(px+rad,py);x.arcTo(px+w,py,px+w,py+h,rad);x.arcTo(px+w,py+h,px,py+h,rad);x.arcTo(px,py+h,px,py,rad);x.arcTo(px,py,px+w,py,rad);x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=2;x.stroke()}}
+  function t(s,px,py,font,color,align,ls){x.font=font;x.fillStyle=color;x.textAlign=align||'left';x.textBaseline='alphabetic';if('letterSpacing' in x)x.letterSpacing=ls||'0px';x.fillText(s,px,py);if('letterSpacing' in x)x.letterSpacing='0px'}
+  function wrap(s,font,maxW){x.font=font;var w=s.split(' '),l=[],cur='';w.forEach(function(p){var n=cur?cur+' '+p:p;if(x.measureText(n).width>maxW&&cur){l.push(cur);cur=p}else cur=n});if(cur)l.push(cur);return l}
+  function fb(w,sz){return w+' '+sz+'px '+IMG_FONT_B}
+  function fd(sz){return sz+'px '+IMG_FONT_D}
+  function pill(px,py,s,bg,col,sz){x.font=fb(700,sz);var w=x.measureText(s).width+36,h=sz+22;rr(px,py,w,h,h/2,bg);t(s,px+18,py+h/2+sz*0.35,fb(700,sz),col);return w}
+  // cabeçalho
+  var hh=300,g=x.createLinearGradient(0,0,W,hh);g.addColorStop(0,'#3A7BC8');g.addColorStop(1,'#1F4F8E');x.fillStyle=g;x.fillRect(0,0,W,hh);
+  var lg=document.querySelector('.brand img');
+  if(lg&&lg.complete&&lg.naturalWidth){var lh=58,lw=lg.naturalWidth/lg.naturalHeight*lh;x.drawImage(lg,P,40,lw,lh);t('COOLIVING',P+lw+26,40+lh*0.68,fb(300,26),'rgba(255,255,255,.9)','left','8px')}
+  t('UNIDADE '+r.unidade.toUpperCase(),P,196,fd(92),'#fff','left','1px');
+  var sub=r.nome?'Simulação para '+r.nome:'Simulação de investimento';t(sub,P,242,fb(500,28),'rgba(255,255,255,.92)');
+  t('Rua Senador Dantas, 80 · Centro · Rio de Janeiro',P,276,fb(500,21),'rgba(255,255,255,.7)');
+  var y=hh+36;
+  function card(h,fill){rr(P,y,CW,h,28,fill||'#fff',fill?null:LINE)}
+  function lab(s,py,col){t(s,P+36,py,fb(800,21),col||BLUE,'left','3px')}
+  // investimento
+  var h1=r.extra>0?470:(r.de?420:360);card(h1);var iy=y;lab('INVESTIMENTO',iy+56);
+  var cy=iy+84;
+  if(r.de){t('Tabela '+toBRL(r.de),P+36,cy+30,fb(500,26),MUT);var tw=(x.font=fb(500,26),x.measureText('Tabela '+toBRL(r.de)).width);x.fillStyle=MUT;x.fillRect(P+36,cy+20,tw,2);cy+=40}
+  t(toBRL(r.por).replace(',00',''),P+36,cy+84,fd(100),INK);
+  var pw=0;if(r.de){var d=r.de-r.por;pw=pill(P+CW-36-(x.font=fb(700,24),x.measureText(pct(d/r.de*100,1)+' de desconto').width+36),cy+22,pct(d/r.de*100,1)+' de desconto',POSBG,POS,24);t('economia de '+toBRL(d),P+CW-36,cy+98,fb(600,22),POS,'right')}
+  cy+=118;
+  if(r.extra>0){t('Desconto adicional de '+toBRL(r.extra)+' → valor final '+toBRL(r.valor),P+36,cy+16,fb(700,24),BLUE);cy+=52}
+  x.fillStyle=LINE;x.fillRect(P+36,cy,CW-72,2);cy+=26;
+  var cols=[['Entrada',toBRL(r.ent).replace(',00',''),pct(r.ent/r.valor*100,1)+' do valor'],['Saldo financiado',toBRL(r.saldo).replace(',00',''),'financiamento'],['Prazo',r.n+' meses',(Math.round(r.n/12*10)/10).toLocaleString('pt-BR')+' anos']];
+  var cw=(CW-72)/3;cols.forEach(function(k,i){var px=P+36+i*cw;t(k[0],px,cy+22,fb(600,21),MUT);t(k[1],px,cy+66,fb(800,32),INK);t(k[2],px,cy+98,fb(500,20),MUT)});
+  y+=h1+24;
+  // parcelas
+  var h2=300;card(h2);lab('PARCELAS ESTIMADAS',y+56);t('taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% ao mês',P+CW-36,y+56,fb(600,21),MUT,'right');
+  var bw=(CW-72-24)/2;
+  [['PRICE','parcela fixa',toBRL(r.pPrice),''],['SAC','1ª parcela',toBRL(r.s1),'termina em '+toBRL(r.sN)]].forEach(function(b,i){var bx=P+36+i*(bw+24),by=y+84;rr(bx,by,bw,184,20,'#EEF3F8');t(b[0],bx+28,by+44,fb(800,22),BLUE,'left','2px');t(b[2],bx+28,by+108,fd(58),INK);t(b[3]||b[1],bx+28,by+150,fb(600,22),MUT);if(b[3])t(b[1],bx+bw-28,by+44,fb(600,20),MUT,'right')});
+  y+=h2+24;
+  // jive
+  var j=r.jive;if(j&&j.ok&&j.include){
+    var fj=r.liq-j.parcela,h3=370;card(h3);lab('SIMULADOR JIVE',y+56);t('parcelamento direto · Price + IPCA',P+CW-36,y+56,fb(600,21),MUT,'right');
+    var jy=y+98;[['Ato',toBRL(j.ato).replace(',00','')+' ('+pct(j.pct,1)+')'],['Saldo',toBRL(j.saldo).replace(',00','')],['Prazo',j.n+' meses']].forEach(function(k,i){t(k[0],P+36,jy+i*48+30,fb(600,24),MUT);t(k[1],P+36+170,jy+i*48+30,fb(800,26),INK)});
+    t(toBRL(j.parcela),P+CW-36,jy+62,fd(70),BLUE,'right');t('por mês + IPCA',P+CW-36,jy+100,fb(600,22),MUT,'right');t('taxa '+j.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m.',P+CW-36,jy+130,fb(500,20),MUT,'right');
+    var msg=fj>=0?'Sobram '+toBRL(fj)+' por mês após a parcela':'Faltam '+toBRL(-fj)+' por mês para a parcela';
+    rr(P+36,y+h3-92,CW-72,64,16,fj>=0?POSBG:NEGBG);t(msg,P+CW/2,y+h3-50,fb(800,26),fj>=0?POS:NEG,'center');
+    y+=h3+24;
+  }
+  // retorno
+  var h4=r.hosp>0?400:330;card(h4);lab('RETORNO DO INVESTIMENTO',y+56);
+  var k=[['Receita líquida',toBRL(r.liq).replace(',00',''),'por mês'],['Yield líquido',pct(r.yieldA,2),'ao ano'],[r.fluxoP>=0?'Sobra no PRICE':'Falta no PRICE',toBRL(Math.abs(r.fluxoP)).replace(',00',''),'por mês']];
+  var kw=(CW-72-40)/3;k.forEach(function(q,i){var kx=P+36+i*(kw+20),ky=y+84;rr(kx,ky,kw,176,20,'#EEF3F8');t(q[0],kx+22,ky+40,fb(700,20),MUT);var col=(i===2)?(r.fluxoP>=0?POS:NEG):INK;t(q[1],kx+22,ky+104,fd(q[1].length>10?44:54),col);t(q[2],kx+22,ky+144,fb(600,20),MUT)});
+  if(r.hosp>0){var ln=wrap('Capacidade de '+r.hosp+' hóspedes, receita bruta estimada de '+toBRL(r.rec)+' por mês. Base: desempenho real de unidade administrada no Send.',fb(500,22),CW-72);ln.forEach(function(s,i){t(s,P+36,y+300+i*32,fb(500,22),MUT)})}
+  y+=h4+24;
+  // por que escolher
+  var it=conclusaoItens(r),lines=[];it.forEach(function(s){lines.push(wrap(s,fb(500,26),CW-72-44))});
+  var tot=0;lines.forEach(function(l){tot+=l.length*38+18});var h5=110+tot+20;
+  rr(P,y,CW,h5,28,NAVY);t('POR QUE ESCOLHER ESTA UNIDADE',P+36,y+58,fb(800,21),'#8FB8EA','left','3px');
+  var ty=y+104;lines.forEach(function(l){x.fillStyle='#5B9BE0';x.beginPath();x.arc(P+44,ty-8,7,0,7);x.fill();l.forEach(function(s,i){t(s,P+72,ty+i*38,fb(500,26),'#fff')});ty+=l.length*38+18});
+  y+=h5+30;
+  // rodapé
+  var cor=($('s-corretor').value||'').trim();
+  if(cor){t(cor+' · Send Cooliving',W/2,y+18,fb(800,26),NAVY,'center');y+=44}
+  wrap('Simulação estimada. Condições sujeitas à análise de crédito do banco, e a rentabilidade do coliving pode variar conforme o desempenho da operação.',fb(500,19),CW).forEach(function(s,i){t(s,W/2,y+16+i*28,fb(500,19),MUT,'center')});
+  y+=70;
+  var o=document.createElement('canvas');o.width=W;o.height=Math.ceil(y);o.getContext('2d').drawImage(c,0,0,W,o.height,0,0,W,o.height);return o;
+}
+var imgCanvas=null,imgTimer=null;
+function fontsReady(){try{return Promise.all([document.fonts.load("800 24px Montserrat"),document.fonts.load("500 24px Montserrat"),document.fonts.load("40px Anton")]).catch(function(){})}catch(e){return Promise.resolve()}}
+function schedImg(){clearTimeout(imgTimer);imgTimer=setTimeout(function(){
+  var im=$('sim-img');if(!last){imgCanvas=null;im.removeAttribute('src');return}
+  fontsReady().then(function(){if(!last)return;imgCanvas=drawSim(last);im.src=imgCanvas.toDataURL('image/png')})},250)}
+function imgFileName(){return 'simulacao-send-'+(last?String(last.unidade).replace(/[^\w-]+/g,'-'):'unidade')+'.png'}
+function imgBlob(cb){if(!last){toast('Preencha a simulação primeiro');return}
+  fontsReady().then(function(){imgCanvas=drawSim(last);imgCanvas.toBlob(function(b){cb(b)},'image/png')})}
+function downloadImg(){imgBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=imgFileName();document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);toast('Imagem baixada')})}
+function shareImg(){imgBlob(function(b){
+  var f;try{f=new File([b],imgFileName(),{type:'image/png'})}catch(e){f=null}
+  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],text:''}).catch(function(){})}
+  else{downloadImg();toast('Imagem baixada. Anexe no WhatsApp.')}})}
+function copyImg(){imgBlob(function(b){
+  if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){toast('Imagem copiada. Cole no WhatsApp.')},function(){downloadImg()})}
+  else downloadImg()})}
+
 function setTab(t){
   curTab=t;
   ['sim','uni','mv','pro'].forEach(function(k){$('view-'+k).hidden=k!==t;$('tab-'+k).setAttribute('aria-selected',k===t)});
@@ -1026,8 +1136,11 @@ $('b-save').addEventListener('click',function(){
   props.unshift(p);save('send-cooliving-props',props);toast('Proposta salva');
 });
 document.querySelectorAll('.seg-ren').forEach(function(g){g.addEventListener('click',function(e){var b=e.target.closest('button');if(b){$('s-rph').value='';setRenCen(b.dataset.r)}})});
-$('mb-send').addEventListener('click',function(){var a=$('a-wa-sim');if(a.getAttribute('aria-disabled')==='true'){toast('Preencha o WhatsApp do cliente e a simulação');return}a.click()});
-$('mb-copy').addEventListener('click',function(){$('b-copy-all').click()});
+$('mb-send').addEventListener('click',shareImg);
+$('mb-copy').addEventListener('click',downloadImg);
+$('b-img-share').addEventListener('click',shareImg);
+$('b-img-dl').addEventListener('click',downloadImg);
+$('b-img-copy').addEventListener('click',copyImg);
 $('mb-save').addEventListener('click',function(){$('b-save').click()});
 document.querySelector('nav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='tab-mob'){setMobile(!mobMode);return}if(b.dataset.tab)setTab(b.dataset.tab)});
 document.addEventListener('click',function(e){
