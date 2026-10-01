@@ -1014,13 +1014,18 @@ function drawSim(r){
   function card(h,fill){rr(P,y,CW,h,28,fill||'#fff',fill?null:LINE)}
   function lab(s,py,col){t(s,P+36,py,fb(800,21),col||BLUE,'left','3px')}
   // investimento
-  var h1=r.extra>0?470:(r.de?420:360);card(h1);var iy=y;lab('INVESTIMENTO',iy+56);
+  var ex=r.extra>0, h1=ex?(r.de?512:452):(r.de?420:360);card(h1);var iy=y;lab('INVESTIMENTO',iy+56);
   var cy=iy+84;
-  if(r.de){t('Tabela '+toBRL(r.de),P+36,cy+30,fb(500,26),MUT);var tw=(x.font=fb(500,26),x.measureText('Tabela '+toBRL(r.de)).width);x.fillStyle=MUT;x.fillRect(P+36,cy+20,tw,2);cy+=40}
-  t(toBRL(r.por).replace(',00',''),P+36,cy+84,fd(100),INK);
-  var pw=0;if(r.de){var d=r.de-r.por;pw=pill(P+CW-36-(x.font=fb(700,24),x.measureText(pct(d/r.de*100,1)+' de desconto').width+36),cy+22,pct(d/r.de*100,1)+' de desconto',POSBG,POS,24);t('economia de '+toBRL(d),P+CW-36,cy+98,fb(600,22),POS,'right')}
+  function strike(s,py){var f=fb(500,26);t(s,P+36,py,f,MUT);x.font=f;var w=x.measureText(s).width;x.fillStyle=MUT;x.fillRect(P+36,py-9,w,2)}
+  if(r.de){strike('Tabela '+toBRL(r.de),cy+30);cy+=40}
+  if(ex){strike('Sem o desconto adicional: '+toBRL(r.por),cy+30);cy+=52}
+  t(toBRL(r.valor).replace(',00',''),P+36,cy+84,fd(100),INK);
+  var dBase=r.de||r.por, dTot=dBase-r.valor;
+  var lbl=pct(dTot/dBase*100,1)+' de desconto';
+  x.font=fb(700,24);var lw2=x.measureText(lbl).width+36;pill(P+CW-36-lw2,cy+22,lbl,POSBG,POS,24);
+  t('economia de '+toBRL(dTot),P+CW-36,cy+98,fb(600,22),POS,'right');
   cy+=118;
-  if(r.extra>0){t('Desconto adicional de '+toBRL(r.extra)+' → valor final '+toBRL(r.valor),P+36,cy+16,fb(700,24),BLUE);cy+=52}
+  if(ex){t('Inclui desconto adicional de '+toBRL(r.extra),P+36,cy+16,fb(700,24),BLUE);cy+=52}
   x.fillStyle=LINE;x.fillRect(P+36,cy,CW-72,2);cy+=26;
   var cols=[['Entrada',toBRL(r.ent).replace(',00',''),pct(r.ent/r.valor*100,1)+' do valor'],['Saldo financiado',toBRL(r.saldo).replace(',00',''),'financiamento'],['Prazo',r.n+' meses',(Math.round(r.n/12*10)/10).toLocaleString('pt-BR')+' anos']];
   var cw=(CW-72)/3;cols.forEach(function(k,i){var px=P+36+i*cw;t(k[0],px,cy+22,fb(600,21),MUT);t(k[1],px,cy+66,fb(800,32),INK);t(k[2],px,cy+98,fb(500,20),MUT)});
