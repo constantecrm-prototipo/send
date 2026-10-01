@@ -1059,8 +1059,9 @@ function drawSim(r){
   // rodapé
   var cor=($('s-corretor').value||'').trim();
   if(cor){t(cor+' · Send Cooliving',W/2,y+18,fb(800,26),NAVY,'center');y+=44}
-  wrap('Simulação estimada. Condições sujeitas à análise de crédito do banco, e a rentabilidade do coliving pode variar conforme o desempenho da operação.',fb(500,19),CW).forEach(function(s,i){t(s,W/2,y+16+i*28,fb(500,19),MUT,'center')});
-  y+=70;
+  var fl=wrap('Simulação estimada. Condições sujeitas à análise de crédito do banco, e a rentabilidade do coliving pode variar conforme o desempenho da operação.',fb(700,25),CW-40);
+  fl.forEach(function(s,i){t(s,W/2,y+20+i*36,fb(700,25),POS,'center')});
+  y+=fl.length*36+50;
   var o=document.createElement('canvas');o.width=W;o.height=Math.ceil(y);o.getContext('2d').drawImage(c,0,0,W,o.height,0,0,W,o.height);return o;
 }
 var imgCanvas=null,imgTimer=null;
