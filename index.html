@@ -52,7 +52,6 @@ header.top,main,.rail{position:relative;z-index:1}
   .rail .v{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:27px;letter-spacing:.04em;line-height:1}
   .rail .c{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:300;font-size:12px;letter-spacing:.42em}
   .rail svg{width:22px;height:22px}
-  header.top,main{margin-left:64px}
 }
 button,input,select,textarea{font:inherit;color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
@@ -259,7 +258,7 @@ body.mob #view-pro td:nth-child(1)::before{content:"Data"}
 body.mob #view-pro td:nth-child(2)::before{content:"Cliente"}
 body.mob #view-pro td:nth-child(3)::before{content:"Unidade"}
 body.mob #view-pro td:nth-child(4)::before{content:"Valor"}
-body.mob #view-pro td:nth-child(5)::before{content:"Parcela PRICE"}
+body.mob #view-pro td:nth-child(5)::before{content:"Parcela Jive"}
 body.mob #view-pro td:nth-child(6)::before{content:"Yield"}
 body.mob #view-pro td:nth-child(7){justify-content:flex-end;gap:8px}
 body.mob td[id^="yl-"]{text-align:right;min-width:0}
@@ -271,8 +270,6 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
 
 <div class="deco" aria-hidden="true"><i class="t1"></i><i class="t2"></i>
   <svg viewBox="0 0 100 60" fill="none"><path d="M0 28 L100 0 L62 60 L44 38 Z" fill="var(--peri)"/><path d="M44 38 L100 0 L52 42 Z" fill="var(--steel)" opacity=".5"/></svg></div>
-<aside class="rail" aria-hidden="true"><span class="c">COOLIVING</span><span class="v">SEND</span>
-  <svg viewBox="0 0 24 24" fill="#fff"><path d="M2 11 L22 3 L15 21 L11 14 Z"/></svg></aside>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#sim" aria-label="SEND COOLIVING"><img alt="SEND" src="data:image/png;base64,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"><span class="cool">Cooliving</span><small>Simulador de vendas</small></a>
@@ -298,7 +295,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
 <!-- SIMULADOR -->
 <section class="view" id="view-sim">
   <h1>Simulador de vendas</h1>
-  <p class="sub">Financiamento SAC e PRICE, mais o retorno de aluguel estimado pela capacidade de hóspedes da unidade.</p>
+  <p class="sub">Parcelamento direto pela Jive, mais o retorno de aluguel estimado pela capacidade de hóspedes da unidade.</p>
   <div class="banner" id="exemplo-banner">Tabela Send de outubro/26, válida até 31/10/2026. Receita de aluguel estimada a partir da unidade 801B, administrada pela MV Host (6 hóspedes).</div>
 
   <div class="grid">
@@ -313,32 +310,10 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
       <div class="actions"><a class="btn primary" id="a-wa-hi" target="_blank" rel="noopener" href="#" aria-disabled="true">Enviar saudação no WhatsApp</a><span class="hint" id="wa-hint" style="margin:0">Digite o WhatsApp do cliente para liberar o envio.</span></div>
       </div>
       <div class="panel">
-      <div class="sect">Unidade e financiamento</div>
+      <div class="sect">Unidade e valor</div>
       <div class="fld"><label for="s-unidade">Unidade</label><select id="s-unidade"></select><div class="hint" id="u-info"></div></div>
       <div class="row2">
         <div class="fld"><label for="s-valor">Valor da unidade (R$)</label><input id="s-valor" type="text" inputmode="numeric" data-money><div class="err" id="e-valor" hidden>Informe um valor válido.</div></div>
-        <div class="fld"><label for="s-entrada">Entrada (R$)</label><input id="s-entrada" type="text" inputmode="numeric" data-money><div class="err" id="e-entrada" hidden>A entrada deve ser menor que o valor.</div><div class="hint" id="h-ltv" hidden>A Caixa financia até 70% do imóvel no PRICE (entrada mínima de 30%). Com entrada menor, as parcelas dependem de aprovação.</div></div>
-      </div>
-      <div class="fld"><label for="s-banco">Banco (regras de seguro e tarifa)</label><select id="s-banco"><option value="caixa">Caixa (SBPE/TR)</option><option value="santander">Santander</option><option value="itau">Itaú</option><option value="inter">Inter</option></select><div class="hint" id="bk-info"></div></div>
-      <div class="fld">
-        <label>Cenário de taxa (% a.m. + TR)</label>
-        <div class="seg" id="seg-taxa">
-          <button type="button" data-t="otimista" aria-pressed="false"><span class="n">Otimista</span><span class="v">0,85%</span></button>
-          <button type="button" data-t="padrao" aria-pressed="true"><span class="n">Padrão</span><span class="v">0,91%</span></button>
-          <button type="button" data-t="conservador" aria-pressed="false"><span class="n">Conservador</span><span class="v">1,00%</span></button>
-        </div>
-        <input id="s-taxa" type="number" step="any" min="0.01" max="5" placeholder="Ou digite a taxa manual, ex: 0,9500" aria-label="Taxa manual ao mês">
-      
-        <div class="hint">Padrão: 0,91% a.m. (11,49% a.a. efetiva), como na simulação Caixa SBPE com TR.</div></div>
-      <div class="fld">
-        <label for="s-nasc">Data de nascimento do comprador</label>
-        <div class="nasc-row"><input id="s-nasc" type="date" value="1985-03-15"><span class="age-chip" id="s-idade" aria-live="polite">—</span></div>
-        <div class="err" id="e-nasc" hidden>Data inválida.</div>
-      </div>
-      <div class="fld" style="margin-bottom:0">
-        <label for="s-prazo">Prazo (meses)</label>
-        <div style="display:flex;gap:8px"><input id="s-prazo" type="number" min="12" max="420" step="12" placeholder="Ex: 360"><button class="btn" type="button" id="b-auto">Auto</button></div>
-        <div class="hint" id="h-prazo">Preencha a data de nascimento para calcular o prazo máximo.</div>
       </div>
         <div class="dd-head"><button class="btn" type="button" id="b-dd" aria-expanded="false">+ Desconto sobre desconto</button><span class="hint" style="margin:0" id="dd-hint">Desconto adicional sobre o valor promocional.</span></div>
         <div class="dd-box" id="dd-box" hidden>
@@ -379,25 +354,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
     </div>
 
     <div class="stack" id="out">
-      <div class="panel" id="inel" hidden><div class="inel">Não elegível ao financiamento: idade igual ou superior a 80 anos.</div></div>
-      <div class="panel" id="empty" hidden><div class="empty">Preencha valor, entrada e data de nascimento para simular.</div></div>
-
-      <div class="panel" id="fin">
-        <h2>Financiamento</h2>
-        <div class="kpis" style="margin-bottom:16px">
-          <div class="kpi"><div class="l">Saldo financiado</div><div class="v" id="r-saldo">—</div><div class="s" id="r-ent">—</div></div>
-          <div class="kpi"><div class="l">Prazo</div><div class="v" id="r-prazo">—</div><div class="s" id="r-idade">—</div></div>
-          <div class="kpi"><div class="l">Taxa</div><div class="v" id="r-taxa">—</div><div class="s">ao mês</div></div>
-        </div>
-        <div class="tbl"><table>
-          <thead><tr><th>Sistema</th><th class="num">1ª parcela</th><th class="num">Última</th><th class="num">Total pago</th></tr></thead>
-          <tbody>
-            <tr><td><b>SAC</b></td><td class="num" id="t-sac1">—</td><td class="num" id="t-sacn">—</td><td class="num" id="t-sact">—</td></tr>
-            <tr><td><b>PRICE</b></td><td class="num" id="t-pr1">—</td><td class="num" id="t-prn">—</td><td class="num" id="t-prt">—</td></tr>
-          </tbody>
-        </table></div>
-        <div class="hint" style="margin-top:10px" id="t-eco"></div>
-      </div>
+      <div class="panel" id="empty" hidden><div class="empty">Selecione a unidade ou informe o valor para simular.</div></div>
 
       <div class="panel" id="jv-panel">
         <h2>Simulador Jive</h2>
@@ -442,8 +399,6 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
         <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="pill" id="pill">—</span><span class="hint" id="pill-txt" style="margin:0"></span></div>
         <div class="hint" id="pill-jv" style="margin-top:8px"></div>
         <div class="kpis" style="margin-top:16px">
-          <div class="kpi"><div class="l">Fluxo mensal PRICE</div><div class="v" id="k-fp">—</div><div class="s">renda líquida menos parcela</div></div>
-          <div class="kpi"><div class="l">Fluxo 1ª parcela SAC</div><div class="v" id="k-fs">—</div><div class="s">melhora a cada mês</div></div>
           <div class="kpi"><div class="l">Fluxo mensal Jive</div><div class="v" id="k-fj">—</div><div class="s" id="k-fj-s">preencha o Simulador Jive</div></div>
         </div>
         <div class="hint" style="margin-top:10px" id="k-coc"></div>
@@ -474,7 +429,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
       <div class="actions" style="margin-top:18px"><button class="btn" id="b-reset" type="button">Limpar</button></div>
       </div>
 
-      <div class="disc">Parcelas calculadas com as regras do banco escolhido (SAC e PRICE, sem a correção da TR): prestação mais seguro MIP (por idade), seguro DFI e tarifa mensal, conforme calibrado nos extratos reais de cada banco. Onde o extrato não cobre a idade do comprador, o MIP é estimado. Estimativa de referência, sem valor de aprovação. Score, renda, FGTS, CET, seguros e perfil de risco definem as condições reais. A rentabilidade do coliving usa uma única unidade como referência, depende da ocupação e dos valores praticados, e não é garantida. Somente a análise de crédito do banco confirma parcelas definitivas.</div>
+      <div class="disc">Simulação estimada pelo parcelamento direto da Jive (tabela Price, taxa mais IPCA, que incide à parte sobre o saldo). Estimativa de referência, sem valor de aprovação: as condições finais dependem de análise e confirmação. A rentabilidade do coliving usa uma única unidade como referência, depende da ocupação e dos valores praticados, e não é garantida.</div>
     </div>
   </div>
 </section>
@@ -561,8 +516,6 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
 (function(){
 'use strict';
 var $=function(id){return document.getElementById(id)};
-var TAXAS={otimista:0.85,padrao:0.9104931,conservador:1.00};
-var taxaSel='padrao';
 var UN=[
  ['Promocional','Mobiliada','A-307',50.14,1213.46,210.20,650666.56,525000],
  ['Promocional','Mobiliada','A-407',50.14,1205.67,210.20,560414.87,480000],
@@ -615,67 +568,11 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;
 function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},2200)}
 
 /* ---------- matemática (mesma do simulador-base) ---------- */
-function calcIdade(nasc){var h=new Date(),d=new Date(nasc);var i=h.getFullYear()-d.getFullYear();var m=h.getMonth()-d.getMonth();if(m<0||(m===0&&h.getDate()<d.getDate()))i--;return i}
-function ageMonths(nasc){if(!nasc)return NaN;var h=new Date(),d=new Date(nasc);if(isNaN(d.getTime()))return NaN;var m=(h.getFullYear()-d.getFullYear())*12+h.getMonth()-d.getMonth();if(h.getDate()<d.getDate())m--;return m}
-function bankNow(){return BANKS[$('s-banco').value]||BANKS.caixa}
-function prazoAuto(nasc){var bk=bankNow(),m=ageMonths(nasc);if(isNaN(m)||m<0||m>=bk.maxM)return null;return Math.min(bk.maxM-m,420)}
 var REF_M2=13000;
-/* ---------- cronograma estilo CAIXA (SBPE/TR): prestação + MIP + DFI + taxa de adm. ---------- */
-function r2(x){return Math.round(x*100)/100}
-function mipRate(age){ // % a.m. sobre saldo devedor
-  if(age>=76)return 0.5312; if(age>=71)return 0.4894; if(age>=66)return 0.3259; if(age>=61)return 0.2731;
-  var a=Math.max(age,25); return 0.012*Math.pow(0.2731/0.012,(a-25)/(63-25));
-}
-function ageAt(nasc,d){var a=d.getFullYear()-nasc.getFullYear();if(d.getMonth()<nasc.getMonth()||(d.getMonth()===nasc.getMonth()&&d.getDate()<nasc.getDate()))a--;return a}
-function ageAtM(nasc,d){return d.getFullYear()-nasc.getFullYear()-(d.getMonth()<nasc.getMonth()?1:0)}
-/* ---------- regras por banco, calibradas em extratos reais (simulação de 17/10/2025, comprador nascido em 14/04/1961) ----------
-   taxa: % a.m. sugerida (null = usa os cenários); dfi: fração do valor do imóvel por mês; tarifa: R$/mês;
-   basis: MIP sobre o saldo 'after' (depois da amortização do mês) ou 'before' (antes); lastIns: seguros também na última parcela;
-   ato: parcela de seguros paga na contratação (entra no total pago); off: 1ª parcela no mês seguinte (1) ou no mês da simulação (0);
-   maxM: idade em meses + prazo; mes: idade pelo mês de aniversário; exact: saldo e amortização sem arredondar a cada mês. */
-function mipItau(age,mb){
-  if(age<=64)return 0.31625; if(age===65)return 0.35033; if(age===66)return 0.34993; if(age===67)return 0.35030;
-  if(age===68)return 0.36632; if(age===69)return 0.40767; if(age===70)return 0.45366; if(age===71)return 0.45220;
-  if(age===72)return 0.50283; if(age===73)return 0.55867; if(age===74)return mb>=6?0.49334:0.62048;
-  if(age===75)return 0.55132; return 0.61616;
-}
-function mipInter(age){return age<=65?0.20246:age<=70?0.33045:age<=75?0.54657:0.88876}
-var BANKS={
-  caixa:{nome:'Caixa',taxa:null,dfi:0.000066,tarifa:25,basis:'after',lastIns:false,ato:false,off:1,maxM:965,mes:false,mip:function(a){return mipRate(a)},maxTxt:'80 anos e 5 meses',
-    info:'MIP por idade (calibrado de 61 a 80 anos), DFI de 0,0066% do imóvel por mês e tarifa de R$ 25.'},
-  santander:{nome:'Santander',taxa:1.0823533,dfi:0.00005,tarifa:25,basis:'after',lastIns:false,ato:true,off:1,maxM:965,mes:false,mip:function(){return 0.384},maxTxt:'80 anos e 5 meses',
-    info:'MIP fixo de 0,384% a.m. (valor máximo cobrado, não varia com a idade), DFI de 0,005% do imóvel e tarifa de R$ 25. Taxa de 1,0823% a.m. (13,79% a.a.), sem relacionamento. Calibrado no extrato de 17/10/2025.'},
-  itau:{nome:'Itaú',taxa:0.9781258,dfi:0.0000554,tarifa:0,basis:'before',lastIns:false,ato:true,off:0,maxM:961,mes:true,exact:true,mip:mipItau,maxTxt:'80 anos na última parcela',
-    info:'MIP por idade sobre o saldo antes da amortização (medido de 64 a 80 anos; abaixo de 64 usa a taxa de 64), DFI de 0,00554% do imóvel e sem tarifa. Taxa de 0,9781% a.m. (12,39% a.a.). Calibrado no extrato de 17/10/2025.'},
-  inter:{nome:'Inter',taxa:0.7916667,dfi:0.000150333,tarifa:25,basis:'before',lastIns:true,ato:false,off:1,maxM:965,mes:true,exact:true,mip:mipInter,maxTxt:'80 anos e 5 meses',
-    info:'MIP por faixa de idade sobre o saldo antes da amortização (medido de 64 a 80 anos; abaixo de 64 usa a faixa até 65), DFI de 0,015% do imóvel e tarifa de R$ 25. Taxa nominal de 9,5% a.a. (0,7917% a.m.). Prazo máximo de idade não confirmado no extrato. Calibrado no extrato de 17/10/2025.'}
-};
-function sched(opt){ // sistema PRICE|SAC
-  var bk=opt.bk||BANKS.caixa;
-  var pv=opt.saldo,i=opt.i,n=opt.n,out=[],s=pv,tot=0;
-  var pm=opt.sis==='PRICE'?r2(pv*i*Math.pow(1+i,n)/(Math.pow(1+i,n)-1)):0, am=bk.exact?pv/n:r2(pv/n);
-  var ageF=bk.mes?ageAtM:ageAt, dfiV=r2(opt.valor*bk.dfi), ato=0;
-  for(var k=1;k<=n;k++){
-    var d=new Date(opt.start.getFullYear(),opt.start.getMonth()+k-1+bk.off,opt.start.getDate());
-    var juros=r2(s*i),prest,saldoN;
-    if(k===n){prest=r2(s+juros);saldoN=0}
-    else if(opt.sis==='PRICE'){prest=pm;saldoN=bk.exact?s*(1+i)-prest:r2(s*(1+i)-prest)}
-    else{prest=r2(am+juros);saldoN=bk.exact?s-am:r2(s-am)}
-    var rate=bk.mip(ageF(opt.nasc,d),(d.getMonth()-opt.nasc.getMonth()+12)%12);
-    if(k===1&&bk.ato)ato=r2(pv*rate/100)+dfiV;
-    var base=bk.basis==='before'?s:saldoN, noIns=(k===n&&!bk.lastIns);
-    var mip=noIns?0:r2(base*rate/100), dfi=noIns?0:dfiV, enc=r2(prest+mip+dfi+bk.tarifa);
-    out.push({k:k,prest:prest,mip:mip,dfi:dfi,enc:enc,saldo:r2(saldoN)});tot+=enc;s=saldoN;
-  }
-  return {rows:out,tot:r2(tot+ato),ato:ato,first:out[0],last:out[n-1]};
-}
-
-
 function pmt(pv,i,n){return pv*(i*Math.pow(1+i,n))/(Math.pow(1+i,n)-1)}
 function sacP1(pv,i,n){return pv/n+pv*i}
 function sacPn(pv,i,n){var a=pv/n;return a+(pv-a*(n-1))*i}
 function sacTotal(pv,i,n){var a=pv/n;return n*a+i*pv*(n+1)/2}
-function getTaxa(){var m=parseFloat($('s-taxa').value);if(!isNaN(m)&&m>0)return m;return TAXAS[taxaSel]}
 
 /* ---------- simulação ---------- */
 /* ---------- Simulador Jive (Price, 0,9489% a.m. + IPCA) ---------- */
@@ -729,7 +626,7 @@ function refreshWA(){
   var as=$('a-wa-sim');as.href=last?waLink(buildScript(last)):'#';as.setAttribute('aria-disabled',String(!(ok&&last)));
   $('wa-hint').textContent=ok?'Abre o WhatsApp com a saudação pronta, para o número ('+($('s-tel').value)+').':'Digite o WhatsApp do cliente para liberar o envio.';
 }
-var autoPrazo=true, last=null, ddMode='rs', ddOpen=false, entAuto=true;
+var last=null, ddMode='rs', ddOpen=false;
 function ddValue(valor){
   if(!ddOpen)return 0;
   var raw=$('s-dd').value;
@@ -747,72 +644,32 @@ function setDD(open,mode,val){
   inp.value='';
   if(val){if(ddMode==='rs')setMoney('s-dd',val);else inp.value=String(val).replace('.',',')}
 }
-function syncEntrada(){
-  if(!entAuto||!curUnit())return;
-  var v=parseBRL($('s-valor').value);if(v<=0)return;
-  setMoney('s-entrada',Math.round((v-ddValue(v))*0.3));
-}
 function renderCondicao(valor,extra,de){
   if(!ddOpen)return;
   var fin=valor-extra;
   $('dd-res').textContent=extra>0?'Desconto de '+toBRL(extra)+' ('+pct(extra/valor*100,2)+'). Valor final: '+toBRL(fin)+'.':'Informe o desconto adicional.';
 }
-function ageInfo(){
-  var nasc=$('s-nasc').value, chip=$('s-idade'), h=$('h-prazo'), m=ageMonths(nasc);
-  chip.classList.remove('bad');
-  if(!nasc||isNaN(m)||m<0){chip.textContent='—';h.textContent='Preencha a data de nascimento para calcular o prazo máximo.';return}
-  var a=Math.floor(m/12);chip.textContent=a+' anos';
-  if(m>=bankNow().maxM){chip.classList.add('bad');h.textContent='Não elegível: idade mais prazo não pode passar de '+bankNow().maxTxt+'.';return}
-  var mx=prazoAuto(nasc);
-  h.textContent='Prazo máximo para este comprador: '+mx+' meses ('+(Math.round(mx/12*10)/10).toLocaleString('pt-BR')+' anos). Idade mais prazo até '+bankNow().maxTxt+', limite de 420 meses.';
-}
 function simular(){
-  refreshWA();ageInfo();
-  var valor=parseBRL($('s-valor').value)-ddValue(parseBRL($('s-valor').value)), ent=parseBRL($('s-entrada').value), nasc=$('s-nasc').value;
-  var porVal=parseBRL($('s-valor').value);var extra=ddValue(porVal);
-  syncJive(porVal-extra);
+  refreshWA();
+  var porVal=parseBRL($('s-valor').value), extra=ddValue(porVal), valor=porVal-extra;
+  syncJive(valor);
   var custos=parseBRL($('s-custos').value);
   var cfg=getCfg(), hosp=Math.max(0,parseInt($('s-hosp').value,10)||0), rph=rphNow();
   var gest=cfg.gest, limp=cfg.limp, oper=cfg.oper, rec=hosp*rph;
   $('s-rec-out').textContent=hosp>0?toBRL(rec)+' por mês':'Informe os hóspedes';
-  var nascOk=true;
-  if(nasc){var d=new Date(nasc);nascOk=!isNaN(d.getTime())&&d<=new Date()}
-  $('e-nasc').hidden=nascOk;
   $('e-valor').hidden=!($('s-valor').value&&porVal<=0);
-  var entBad=!!$('s-entrada').value&&(ent<=0||ent>=valor);
-  $('e-entrada').hidden=!entBad;
-
   renderCondicao(porVal,extra,(function(){var c=curUnit();return (c&&Math.abs(c.valor-porVal)<1&&c.de>c.valor)?c.de:0})());
-  var ready=valor>0&&ent>0&&ent<valor&&nasc&&nascOk;
+  var ready=valor>0;
   $('empty').hidden=ready;
-  ['res','fin','scr'].forEach(function(id){$(id).hidden=!ready});
-  $('inel').hidden=true;
+  ['res','scr'].forEach(function(id){$(id).hidden=!ready});
   last=null;
   if(!ready){schedImg();return}
-
-  var idade=calcIdade(nasc);
-  if(ageMonths(nasc)>=bankNow().maxM){$('inel').hidden=false;['res','fin','scr'].forEach(function(id){$(id).hidden=true});return}
-
-  var pz=parseInt($('s-prazo').value,10), pzMax=prazoAuto(nasc)||420;
-  if(!(pz>0)){pz=pzMax;}
-  pz=Math.min(pz,pzMax,420);
-  var taxa=getTaxa(), i=taxa/100, saldo=valor-ent, n=pz;
-  var nascD=new Date(nasc+'T12:00:00'), hoje=new Date();
-  var SP=sched({sis:'PRICE',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor,bk:bankNow()}), SS=sched({sis:'SAC',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor,bk:bankNow()});
-  var pPrice=SP.first.enc, pPriceN=SP.last.enc, totPrice=SP.tot, s1=SS.first.enc, sN=SS.last.enc, totSac=SS.tot;
-  var prestP=SP.first.prest, segP=SP.first.enc-SP.first.prest, prestS=SS.first.prest, segS=SS.first.enc-SS.first.prest;
-  $('h-ltv').hidden=!(saldo>valor*0.7+1);
-
   var liq=rec*(1-gest/100-limp/100)-custos-oper;
-  var yieldA=valor>0?liq*12/valor*100:0;
+  var yieldA=liq*12/valor*100;
   var payback=liq>0?valor/(liq*12):null;
-  var fluxoP=liq-pPrice, fluxoS=liq-s1;
-  var coc=ent>0?fluxoP*12/ent*100:0;
-
   var cu=curUnit();var deT=(cu&&Math.abs(cu.valor-porVal)<1&&cu.de>cu.valor)?cu.de:0;
-  last={jive:Object.assign({},jive),por:porVal,extra:extra,ddMode:ddMode,ddRaw:ddOpen?$('s-dd').value:'',de:deT,nome:$('s-cliente').value.trim(),tel:$('s-tel').value.trim(),unidade:selName(),valor:valor,ent:ent,saldo:saldo,n:n,taxa:taxa,idade:idade,nasc:nasc,area:(cu&&cu.area)||0,
-    hosp:hosp,rph:rph,rec:rec,cen:($('s-rph').value&&parseBRL($('s-rph').value)>0)?'manual':renCen,limp:limp,oper:oper,gest:gest,custos:custos,pPrice:pPrice,pPriceN:pPriceN,prestP:prestP,segP:segP,prestS:prestS,segS:segS,s1:s1,sN:sN,totPrice:totPrice,totSac:totSac,liq:liq,yieldA:yieldA,payback:payback,fluxoP:fluxoP,fluxoS:fluxoS,coc:coc};
-  last.banco=$('s-banco').value;last.bancoNome=bankNow().nome;last.tarifa=bankNow().tarifa;last.ato=SP.ato;
+  last={jive:Object.assign({},jive),por:porVal,extra:extra,ddMode:ddMode,ddRaw:ddOpen?$('s-dd').value:'',de:deT,nome:$('s-cliente').value.trim(),tel:$('s-tel').value.trim(),unidade:selName(),valor:valor,area:(cu&&cu.area)||0,
+    hosp:hosp,rph:rph,rec:rec,cen:($('s-rph').value&&parseBRL($('s-rph').value)>0)?'manual':renCen,limp:limp,oper:oper,gest:gest,custos:custos,liq:liq,yieldA:yieldA,payback:payback};
   render(last);schedImg();
 }
 function selName(){var s=$('s-unidade');var o=s.options[s.selectedIndex];return o&&o.value?o.textContent.split(' · ')[0]:'a unidade'}
@@ -822,33 +679,23 @@ function render(r){
   $('k-yield').textContent=pct(r.yieldA,2);
   $('k-pay').textContent=r.payback?r.payback.toLocaleString('pt-BR',{maximumFractionDigits:1})+' anos':'—';
   var jv=(r.jive&&r.jive.ok)?r.jive:null;
-  var max=Math.max(r.liq,r.pPrice,r.s1,jv?jv.parcela:0,1);
+  var max=Math.max(r.liq,jv?jv.parcela:0,1);
   function bar(cls,l,v){return '<div class="bar '+cls+'"><span>'+l+'</span><span class="t"><i style="width:'+Math.max(0,v/max*100)+'%"></i></span><span class="val">'+toBRL(v)+'</span></div>'}
-  $('bars').innerHTML=bar('inc','Renda líquida',Math.max(0,r.liq))+bar('','Parcela PRICE',r.pPrice)+bar('sac','1ª parcela SAC',r.s1)+(jv?bar('jv','Parcela Jive',jv.parcela):'');
-  var pill=$('pill'), ok=r.fluxoP>=0;
-  pill.className='pill '+(ok?'pos':'neg');
-  pill.textContent=ok?'Renda cobre a parcela PRICE':'Aporte mensal necessário';
-  $('pill-txt').textContent=ok?'Sobra '+toBRL(r.fluxoP)+' por mês.':'O investidor completa '+toBRL(-r.fluxoP)+' por mês no PRICE'+(r.fluxoS>=0?'; no SAC a renda cobre a 1ª parcela.':' e '+toBRL(-r.fluxoS)+' no SAC.');
-  $('k-fp').textContent=toBRL(r.fluxoP);$('k-fp').style.color=r.fluxoP>=0?'var(--pos)':'var(--neg)';
-  $('k-fs').textContent=toBRL(r.fluxoS);$('k-fs').style.color=r.fluxoS>=0?'var(--pos)':'var(--neg)';
+  $('bars').innerHTML=bar('inc','Renda líquida',Math.max(0,r.liq))+(jv?bar('jv','Parcela Jive',jv.parcela):'');
+  var pill=$('pill');
   if(jv){
     var fj=r.liq-jv.parcela;r.fluxoJ=fj;
+    pill.className='pill '+(fj>=0?'pos':'neg');
+    pill.textContent=fj>=0?'Renda cobre a parcela Jive':'Aporte mensal necessário';
+    $('pill-txt').textContent=fj>=0?'Sobra '+toBRL(fj)+' por mês, sem IPCA.':'O investidor completa '+toBRL(-fj)+' por mês para pagar a parcela de '+toBRL(jv.parcela)+', sem IPCA.';
     $('k-fj').textContent=toBRL(fj);$('k-fj').style.color=fj>=0?'var(--pos)':'var(--neg)';
     $('k-fj-s').textContent=fj>=0?'sobra por mês, sem IPCA':'falta por mês, sem IPCA';
-    $('pill-jv').textContent=fj>=0?'Na Jive, a renda líquida cobre a parcela de '+toBRL(jv.parcela)+' e sobra '+toBRL(fj)+' por mês.':'Na Jive, o investidor completa '+toBRL(-fj)+' por mês para pagar a parcela de '+toBRL(jv.parcela)+'.';
   }else{
-    $('k-fj').textContent='—';$('k-fj').style.color='';$('k-fj-s').textContent='preencha o Simulador Jive';$('pill-jv').textContent='';
+    r.fluxoJ=null;pill.className='pill';pill.textContent='—';$('pill-txt').textContent='Preencha o Simulador Jive para comparar com a renda.';
+    $('k-fj').textContent='—';$('k-fj').style.color='';$('k-fj-s').textContent='preencha o Simulador Jive';
   }
-  $('k-coc').textContent=(r.hosp>0?'Receita bruta de '+toBRL(r.rec)+' ('+r.hosp+' hóspedes × '+toBRL(r.rph)+'). ':'Informe os hóspedes para estimar a receita. ')+'Retorno anual sobre a entrada (PRICE): '+pct(r.coc,1)+', sem valorização do imóvel.';
-
-  $('r-saldo').textContent=toBRL(r.saldo);
-  $('r-ent').textContent='Entrada '+toBRL(r.ent)+' ('+pct(r.ent/r.valor*100,1)+')';
-  $('r-prazo').textContent=r.n+' meses';
-  $('r-idade').textContent=(Math.round(r.n/12*10)/10).toLocaleString('pt-BR')+' anos, cliente com '+r.idade;
-  $('r-taxa').textContent=r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'%';
-  $('t-sac1').textContent=toBRL(r.s1);$('t-sacn').textContent=toBRL(r.sN);$('t-sact').textContent=toBRL(r.totSac);
-  $('t-pr1').textContent=toBRL(r.pPrice);$('t-prn').textContent=toBRL(r.pPriceN);$('t-prt').textContent=toBRL(r.totPrice);
-  $('t-eco').textContent='Banco: '+r.bancoNome+'. Parcelas com seguros (MIP e DFI)'+(r.tarifa>0?' e tarifa de '+toBRL(r.tarifa):'')+'. 1ª parcela PRICE: prestação de '+toBRL(r.prestP)+' + seguros'+(r.tarifa>0?' e tarifa':'')+' de '+toBRL(r.segP)+'. '+(r.ato>0?'O total pago inclui '+toBRL(r.ato)+' de seguros pagos na contratação. ':'')+(r.totPrice>r.totSac?'O SAC custa '+toBRL(r.totPrice-r.totSac)+' a menos no total, com parcela inicial maior.':'')+' O saldo devedor é corrigido pela TR.';
+  $('pill-jv').textContent='';
+  $('k-coc').textContent=(r.hosp>0?'Receita bruta de '+toBRL(r.rec)+' ('+r.hosp+' hóspedes × '+toBRL(r.rph)+'). ':'Informe os hóspedes para estimar a receita. ')+(jv&&jv.ato>0?'Retorno anual sobre o ato (Jive): '+pct(r.fluxoJ*12/jv.ato*100,1)+', sem valorização do imóvel.':'');
   $('script').textContent=buildScript(r);
   refreshWA();
 }
@@ -861,13 +708,6 @@ function buildScript(r){
   if(r.de)L.push('Tabela '+toBRL(r.de)+' por *'+toBRL(r.por)+'* (desconto de '+toBRL(r.de-r.por)+', '+pct((r.de-r.por)/r.de*100,1)+')');
   else L.push('Valor da unidade: '+toBRL(r.por));
   if(r.extra>0)L.push('Desconto adicional de '+toBRL(r.extra)+': *valor final '+toBRL(r.valor)+'*'+(r.de?' (desconto total de '+toBRL(r.de-r.valor)+', '+pct((r.de-r.valor)/r.de*100,1)+')':''));
-  L.push('Entrada: *'+toBRL(r.ent)+' ('+pct(r.ent/r.valor*100,1)+')*');
-  L.push('Saldo financiado: '+toBRL(r.saldo)+' em *'+r.n+' meses*');
-  L.push('');
-  L.push('*Parcelas estimadas* (taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m. + TR)');
-  L.push('PRICE: *começa em* '+toBRL(r.pPrice)+' e *termina em* '+toBRL(r.pPriceN));
-  L.push('SAC: *começa em* '+toBRL(r.s1)+' e *termina em* '+toBRL(r.sN));
-  L.push('Parcelas incluem seguros (MIP e DFI)'+(r.tarifa>0?' e taxa de administração':'')+'.');
   var j=r.jive;
   if(j&&j.ok&&j.include){
     L.push('');
@@ -884,7 +724,6 @@ function buildScript(r){
   if(r.hosp>0)L.push('Capacidade: '+r.hosp+' hóspedes, receita bruta estimada de '+toBRL(r.rec)+' por mês');
   L.push('*Receita líquida estimada: '+toBRL(r.liq)+' por mês*');
   L.push('Yield líquido: '+pct(r.yieldA,2)+' ao ano');
-  L.push(r.fluxoP>=0?'A renda cobre a parcela PRICE e sobra '+toBRL(r.fluxoP)+' por mês.':'Fluxo mensal no PRICE após a renda: '+toBRL(r.fluxoP)+'.');
   L.push('');
   L.push('*Por que escolher esta unidade*');
   if(r.area>0){
@@ -898,7 +737,7 @@ function buildScript(r){
   if(r.liq>0)L.push('Já nasce com perspectiva de renda: *'+toBRL(r.liq)+' por mês* ('+pct(r.yieldA,2)+' ao ano), enquanto na planta o capital fica parado até a entrega.');
   L.push('Além da renda, há potencial de valorização conforme o m² se aproxima dos valores dos novos lançamentos.');
   L.push('');
-  L.push('*Simulação estimada. Condições sujeitas à análise de crédito do banco,*');
+  L.push('*Simulação estimada. Condições sujeitas à análise e confirmação,*');
   L.push('*e a rentabilidade do coliving pode variar conforme o desempenho da operação*');
   return L.join('\n');
 }
@@ -919,9 +758,8 @@ function curUnit(){return units.filter(function(x){return x.id===$('s-unidade').
 function applyUnit(){
   var u=curUnit();
   if(!u){$('u-info').textContent='';return}
-  setDD(false);entAuto=true;
+  setDD(false);
   setMoney('s-valor',u.valor);$('s-hosp').value=u.hosp||'';
-  setMoney('s-entrada',Math.round(u.valor*0.3));
   setMoney('s-custos',Math.round(((u.cond||0)+(u.iptu||0))*100)/100);
   var parts=[u.tipo,u.area?u.area.toLocaleString('pt-BR')+' m²':''];
   if(u.semVisita)parts.push('mobiliada em aluguel por temporada, visita só com a coordenação');
@@ -1013,18 +851,16 @@ function renderUnits(){
 function renderProps(){
   var w=$('pro-wrap');
   if(!props.length){w.innerHTML='<div class="empty">Nenhuma proposta salva ainda. Faça uma simulação e use Salvar proposta.</div>';return}
-  w.innerHTML='<table><thead><tr><th>Data</th><th>Cliente</th><th>Unidade</th><th class="num">Valor</th><th class="num">Parcela PRICE</th><th class="num">Yield<span class="sub">rendimento sobre o valor investido 📈</span></th><th></th></tr></thead><tbody>'+props.map(function(p,ix){
-    return '<tr><td>'+esc(p.data)+'</td><td>'+esc(p.nome||'Sem nome')+'</td><td>'+esc(p.unidade)+'</td><td class="num">'+toBRL(p.valor)+'</td><td class="num">'+toBRL(p.pPrice)+'</td><td class="num">'+pct(p.yieldA,2)+'</td><td class="num"><button class="btn sm" data-open="'+ix+'" type="button">Abrir</button> <button class="btn sm danger" data-del-p="'+ix+'" type="button">Excluir</button></td></tr>'}).join('')+'</tbody></table>';
+  w.innerHTML='<table><thead><tr><th>Data</th><th>Cliente</th><th>Unidade</th><th class="num">Valor</th><th class="num">Parcela Jive</th><th class="num">Yield<span class="sub">rendimento sobre o valor investido 📈</span></th><th></th></tr></thead><tbody>'+props.map(function(p,ix){
+    return '<tr><td>'+esc(p.data)+'</td><td>'+esc(p.nome||'Sem nome')+'</td><td>'+esc(p.unidade)+'</td><td class="num">'+toBRL(p.valor)+'</td><td class="num">'+(p.jive&&p.jive.ok?toBRL(p.jive.parcela):'—')+'</td><td class="num">'+pct(p.yieldA,2)+'</td><td class="num"><button class="btn sm" data-open="'+ix+'" type="button">Abrir</button> <button class="btn sm danger" data-del-p="'+ix+'" type="button">Excluir</button></td></tr>'}).join('')+'</tbody></table>';
 }
 function openProp(ix){
   var p=props[ix];if(!p)return;
-  $('s-banco').value=p.banco||'caixa';$('bk-info').textContent=bankNow().info;
-  $('s-cliente').value=p.nome||'';$('s-tel').value=p.tel||'';$('s-nasc').value=p.nasc||'';
-  setMoney('s-valor',p.por||p.valor);setMoney('s-entrada',p.ent);setMoney('s-custos',p.custos);
+  $('s-cliente').value=p.nome||'';$('s-tel').value=p.tel||'';
+  setMoney('s-valor',p.por||p.valor);setMoney('s-custos',p.custos);
   $('s-hosp').value=p.hosp||'';$('s-gestao').value=p.gest;$('s-limp').value=p.limp;setMoney('s-oper',p.oper);
   if(p.cen==='manual'){setMoney('s-rph',p.rph);setRenCen(null,true)}else{$('s-rph').value='';setRenCen(p.cen||'realista',true)}
- $('s-prazo').value=p.n;$('s-taxa').value=p.taxa;
-  $('s-unidade').value='';$('u-info').textContent='';entAuto=false;
+  $('s-unidade').value='';$('u-info').textContent='';
   if(p.extra>0)setDD(true,p.ddMode,p.ddMode==='rs'?p.extra:parseFloat(String(p.ddRaw).replace(',','.'))||0);else setDD(false);
   if(p.jive&&p.jive.valor){jvAuto=false;setMoney('jv-valor',p.jive.valor);jvPct=p.jive.pct;$('jv-meses').value=p.jive.n;$('jv-taxa').value=p.jive.taxa;$('jv-inc').checked=!!p.jive.include}
   setTab('sim');simular();
@@ -1075,7 +911,7 @@ function drawSim(r){
   function card(h,fill){rr(P,y,CW,h,28,fill||'#fff',fill?null:LINE)}
   function lab(s,py,col){t(s,P+36,py,fb(800,21),col||BLUE,'left','3px')}
   // investimento
-  var ex=r.extra>0, h1=ex?(r.de?512:452):(r.de?420:360);card(h1);var iy=y;lab('INVESTIMENTO',iy+56);
+  var ex=r.extra>0, h1=ex?(r.de?368:308):(r.de?276:216);card(h1);var iy=y;lab('INVESTIMENTO',iy+56);
   var cy=iy+84;
   function strike(s,py){var f=fb(500,26);t(s,P+36,py,f,MUT);x.font=f;var w=x.measureText(s).width;x.fillStyle=MUT;x.fillRect(P+36,py-9,w,2)}
   if(r.de){strike('Tabela '+toBRL(r.de),cy+30);cy+=40}
@@ -1087,15 +923,7 @@ function drawSim(r){
   t('economia de '+toBRL(dTot),P+CW-36,cy+98,fb(600,22),POS,'right');
   cy+=118;
   if(ex){t('Inclui desconto adicional de '+toBRL(r.extra),P+36,cy+16,fb(700,24),BLUE);cy+=52}
-  x.fillStyle=LINE;x.fillRect(P+36,cy,CW-72,2);cy+=26;
-  var cols=[['Entrada',toBRL(r.ent).replace(',00',''),pct(r.ent/r.valor*100,1)+' do valor'],['Saldo financiado',toBRL(r.saldo).replace(',00',''),'financiamento'],['Prazo',r.n+' meses',(Math.round(r.n/12*10)/10).toLocaleString('pt-BR')+' anos']];
-  var cw=(CW-72)/3;cols.forEach(function(k,i){var px=P+36+i*cw;t(k[0],px,cy+22,fb(600,21),MUT);t(k[1],px,cy+66,fb(800,32),INK);t(k[2],px,cy+98,fb(500,20),MUT)});
   y+=h1+24;
-  // parcelas
-  var h2=330;card(h2);lab('PARCELAS ESTIMADAS',y+56);t('taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m. + TR',P+CW-36,y+56,fb(600,21),MUT,'right');t('Inclui seguros (MIP e DFI)'+(r.tarifa>0?' e taxa de administração':''),P+36,y+h2-26,fb(500,20),MUT);
-  var bw=(CW-72-24)/2;
-  [['PRICE','1ª parcela',toBRL(r.pPrice),'termina em '+toBRL(r.pPriceN)],['SAC','1ª parcela',toBRL(r.s1),'termina em '+toBRL(r.sN)]].forEach(function(b,i){var bx=P+36+i*(bw+24),by=y+84;rr(bx,by,bw,184,20,'#EEF3F8');t(b[0],bx+28,by+44,fb(800,22),BLUE,'left','2px');t(b[2],bx+28,by+108,fd(58),INK);t(b[3]||b[1],bx+28,by+150,fb(600,22),MUT);if(b[3])t(b[1],bx+bw-28,by+44,fb(600,20),MUT,'right')});
-  y+=h2+24;
   // jive
   var j=r.jive;if(j&&j.ok&&j.include){
     var fj=r.liq-j.parcela,h3=370;card(h3);lab('SIMULADOR JIVE',y+56);t('parcelamento direto · Price + IPCA',P+CW-36,y+56,fb(600,21),MUT,'right');
@@ -1107,8 +935,9 @@ function drawSim(r){
   }
   // retorno
   var h4=r.hosp>0?400:330;card(h4);lab('RETORNO DO INVESTIMENTO',y+56);
-  var k=[['Receita líquida',toBRL(r.liq).replace(',00',''),'por mês'],['Yield líquido',pct(r.yieldA,2),'ao ano'],[r.fluxoP>=0?'Sobra no PRICE':'Falta no PRICE',toBRL(Math.abs(r.fluxoP)).replace(',00',''),'por mês']];
-  var kw=(CW-72-40)/3;k.forEach(function(q,i){var kx=P+36+i*(kw+20),ky=y+84;rr(kx,ky,kw,176,20,'#EEF3F8');t(q[0],kx+22,ky+40,fb(700,20),MUT);var col=(i===2)?(r.fluxoP>=0?POS:NEG):INK;t(q[1],kx+22,ky+104,fd(q[1].length>10?44:54),col);t(q[2],kx+22,ky+144,fb(600,20),MUT)});
+  var jj=(r.jive&&r.jive.ok&&r.jive.include)?r.jive:null, fx=jj?r.liq-jj.parcela:null;
+  var k=[['Receita líquida',toBRL(r.liq).replace(',00',''),'por mês'],['Yield líquido',pct(r.yieldA,2),'ao ano'],fx!==null?[fx>=0?'Sobra na Jive':'Falta na Jive',toBRL(Math.abs(fx)).replace(',00',''),'por mês, sem IPCA']:['Receita bruta',toBRL(r.rec).replace(',00',''),'por mês']];
+    var kw=(CW-72-40)/3;k.forEach(function(q,i){var kx=P+36+i*(kw+20),ky=y+84;rr(kx,ky,kw,176,20,'#EEF3F8');t(q[0],kx+22,ky+40,fb(700,20),MUT);var col=(i===2&&fx!==null)?(fx>=0?POS:NEG):INK;t(q[1],kx+22,ky+104,fd(q[1].length>10?44:54),col);t(q[2],kx+22,ky+144,fb(600,20),MUT)});
   if(r.hosp>0){var ln=wrap('Capacidade de '+r.hosp+' hóspedes, receita bruta estimada de '+toBRL(r.rec)+' por mês. Base: desempenho real de unidade administrada no Send.',fb(500,22),CW-72);ln.forEach(function(s,i){t(s,P+36,y+300+i*32,fb(500,22),MUT)})}
   y+=h4+24;
   // por que escolher
@@ -1120,7 +949,7 @@ function drawSim(r){
   // rodapé
   var cor=($('s-corretor').value||'').trim();
   if(cor){t(cor+' · Send Cooliving',W/2,y+18,fb(800,26),NAVY,'center');y+=44}
-  var fl=wrap('Simulação estimada. Condições sujeitas à análise de crédito do banco, e a rentabilidade do coliving pode variar conforme o desempenho da operação.',fb(700,25),CW-40);
+  var fl=wrap('Simulação estimada. Condições sujeitas à análise e confirmação, e a rentabilidade do coliving pode variar conforme o desempenho da operação.',fb(700,25),CW-40);
   fl.forEach(function(s,i){t(s,W/2,y+20+i*36,fb(700,25),POS,'center')});
   y+=fl.length*36+50;
   var o=document.createElement('canvas');o.width=W;o.height=Math.ceil(y);o.getContext('2d').drawImage(c,0,0,W,o.height,0,0,W,o.height);return o;
@@ -1151,17 +980,12 @@ function setTab(t){
   if(t==='uni')refreshReturns();
   try{history.replaceState(null,'','#'+t)}catch(e){}
 }
-function setTaxa(t){
-  taxaSel=t;
-  document.querySelectorAll('#seg-taxa button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===t)});
-  $('s-taxa').value='';simular();
-}
 function resetAll(){
-  ['s-cliente','s-tel','s-nasc','s-valor','s-entrada','s-prazo','s-taxa','s-rph','s-hosp','s-custos'].forEach(function(id){$(id).value=''});
-  $('s-gestao').value=0;$('s-limp').value=pctFmt(ST.limpPct);setMoney('s-oper',OPER_DEF);$('s-unidade').value='';setDD(false);entAuto=true;
+  ['s-cliente','s-tel','s-valor','s-rph','s-hosp','s-custos'].forEach(function(id){$(id).value=''});
+  $('s-gestao').value=0;$('s-limp').value=pctFmt(ST.limpPct);setMoney('s-oper',OPER_DEF);$('s-unidade').value='';setDD(false);
   jvAuto=true;jvPct=30;$('jv-meses').value=240;$('jv-taxa').value='0.9489';$('jv-inc').checked=true;
   renCen='realista';setRenCen('realista',true);
-  setTaxa('padrao');
+  simular();
 }
 
 /* ---------- eventos ---------- */
@@ -1170,35 +994,20 @@ document.addEventListener('input',function(e){
   if(el.hasAttribute&&el.hasAttribute('data-money'))maskMoney(el);
   if(el.id==='s-tel')maskPhone(el);
   if(el.id==='s-corretor'){try{localStorage.setItem(CORKEY,el.value)}catch(x){}}
-  if(el.id==='s-entrada')entAuto=false;
-  if(el.id==='s-prazo')autoPrazo=false;
-  if(el.id==='s-valor'||el.id==='s-dd')syncEntrada();
   if(el.dataset&&el.dataset.hospU){var uu=units.filter(function(x){return x.id===el.dataset.hospU})[0];if(uu){uu.hosp=Math.max(0,parseInt(el.value,10)||0);save(UKEY,units);refreshReturns()}return}
   if(el.id==='jv-valor')jvAuto=false;
   if(el.id&&el.id.indexOf('jv-')===0)jvSrc=el.id;
   if(el.closest&&el.closest('#view-sim')){
-    if(el.id==='s-nasc'){var a=prazoAuto(el.value);var cur=parseInt($('s-prazo').value,10);if(a&&(!cur||cur>a||autoPrazo))$('s-prazo').value=a}
     if(el.id==='s-rph'){document.querySelectorAll('.seg-ren button').forEach(function(b){b.setAttribute('aria-pressed',el.value?'false':String(b.dataset.r===renCen))})}
-    if(el.id==='s-taxa'){document.querySelectorAll('#seg-taxa button').forEach(function(b){b.setAttribute('aria-pressed','false')});if(!el.value)document.querySelector('#seg-taxa [data-t="'+taxaSel+'"]').setAttribute('aria-pressed','true')}
     simular();refreshReturns();
   }
 });
 $('s-unidade').addEventListener('change',function(){applyUnit();simular()});
-$('s-banco').addEventListener('change',function(){
-  var bk=bankNow();$('bk-info').textContent=bk.info;
-  $('s-taxa').value=bk.taxa==null?'':String(bk.taxa);
-  document.querySelectorAll('#seg-taxa button').forEach(function(b){b.setAttribute('aria-pressed',String(bk.taxa==null&&b.dataset.t===taxaSel))});
-  var a=prazoAuto($('s-nasc').value),cur=parseInt($('s-prazo').value,10);
-  if(a&&(!cur||cur>a||autoPrazo))$('s-prazo').value=a;
-  simular();
-});
-$('seg-taxa').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setTaxa(b.dataset.t)});
-$('b-auto').addEventListener('click',function(){autoPrazo=true;var a=prazoAuto($('s-nasc').value);$('s-prazo').value=a||'';simular()});
 $('b-reset').addEventListener('click',resetAll);
 $('jv-quick').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;jvPct=parseFloat(b.dataset.jvp);jvSrc='jv-quick';simular()});
 $('jv-sync').addEventListener('click',function(){jvAuto=true;jvSrc='jv-sync';simular()});
-$('b-dd').addEventListener('click',function(){setDD(!ddOpen,ddMode);syncEntrada();simular()});
-$('dd-mode').addEventListener('click',function(e){var b=e.target.closest('button');if(b){setDD(true,b.dataset.ddm);syncEntrada();simular()}});
+$('b-dd').addEventListener('click',function(){setDD(!ddOpen,ddMode);simular()});
+$('dd-mode').addEventListener('click',function(e){var b=e.target.closest('button');if(b){setDD(true,b.dataset.ddm);simular()}});
 $('b-copy').addEventListener('click',function(){if(last)copyText(buildScript(last))});
 $('greet').addEventListener('input',function(){greetEdited=true;refreshWA()});
 $('b-greet-reset').addEventListener('click',function(){greetEdited=false;refreshWA()});
@@ -1253,8 +1062,6 @@ renderMV();fillUnits();renderUnits();
 $('s-unidade').value='u-a-307';
 if(!$('s-unidade').value)$('s-unidade').value='';
 applyUnit();
-$('s-prazo').value=prazoAuto($('s-nasc').value)||'';
-$('bk-info').textContent=bankNow().info;
 var h=(location.hash||'').replace('#','');
 var sm=null;try{sm=localStorage.getItem('send-cooliving-mode')}catch(e){}
 setMobile(h==='mob'||(sm?sm==='mob':window.innerWidth<700));
