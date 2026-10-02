@@ -319,6 +319,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
         <div class="fld"><label for="s-valor">Valor da unidade (R$)</label><input id="s-valor" type="text" inputmode="numeric" data-money><div class="err" id="e-valor" hidden>Informe um valor válido.</div></div>
         <div class="fld"><label for="s-entrada">Entrada (R$)</label><input id="s-entrada" type="text" inputmode="numeric" data-money><div class="err" id="e-entrada" hidden>A entrada deve ser menor que o valor.</div><div class="hint" id="h-ltv" hidden>A Caixa financia até 70% do imóvel no PRICE (entrada mínima de 30%). Com entrada menor, as parcelas dependem de aprovação.</div></div>
       </div>
+      <div class="fld"><label for="s-banco">Banco (regras de seguro e tarifa)</label><select id="s-banco"><option value="caixa">Caixa (SBPE/TR)</option><option value="santander">Santander</option><option value="itau">Itaú</option><option value="inter">Inter</option></select><div class="hint" id="bk-info"></div></div>
       <div class="fld">
         <label>Cenário de taxa (% a.m. + TR)</label>
         <div class="seg" id="seg-taxa">
@@ -326,7 +327,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
           <button type="button" data-t="padrao" aria-pressed="true"><span class="n">Padrão</span><span class="v">0,91%</span></button>
           <button type="button" data-t="conservador" aria-pressed="false"><span class="n">Conservador</span><span class="v">1,00%</span></button>
         </div>
-        <input id="s-taxa" type="number" step="0.0001" min="0.01" max="5" placeholder="Ou digite a taxa manual, ex: 0,9500" aria-label="Taxa manual ao mês">
+        <input id="s-taxa" type="number" step="any" min="0.01" max="5" placeholder="Ou digite a taxa manual, ex: 0,9500" aria-label="Taxa manual ao mês">
       
         <div class="hint">Padrão: 0,91% a.m. (11,49% a.a. efetiva), como na simulação Caixa SBPE com TR.</div></div>
       <div class="fld">
@@ -473,7 +474,7 @@ body.mob td[id^="yl-"]{text-align:right;min-width:0}
       <div class="actions" style="margin-top:18px"><button class="btn" id="b-reset" type="button">Limpar</button></div>
       </div>
 
-      <div class="disc">Parcelas calculadas como na simulação Caixa (SBPE, PRICE/TR): prestação mais seguro MIP (pela idade, calibrado de 61 a 80 anos; abaixo disso é estimado), seguro DFI e taxa de administração de R$ 25, sem a correção da TR. Estimativa de referência, sem valor de aprovação. Score, renda, FGTS, CET, seguros e perfil de risco definem as condições reais. A rentabilidade do coliving usa uma única unidade como referência, depende da ocupação e dos valores praticados, e não é garantida. Somente a análise de crédito do banco confirma parcelas definitivas.</div>
+      <div class="disc">Parcelas calculadas com as regras do banco escolhido (SAC e PRICE, sem a correção da TR): prestação mais seguro MIP (por idade), seguro DFI e tarifa mensal, conforme calibrado nos extratos reais de cada banco. Onde o extrato não cobre a idade do comprador, o MIP é estimado. Estimativa de referência, sem valor de aprovação. Score, renda, FGTS, CET, seguros e perfil de risco definem as condições reais. A rentabilidade do coliving usa uma única unidade como referência, depende da ocupação e dos valores praticados, e não é garantida. Somente a análise de crédito do banco confirma parcelas definitivas.</div>
     </div>
   </div>
 </section>
@@ -616,7 +617,8 @@ function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeo
 /* ---------- matemática (mesma do simulador-base) ---------- */
 function calcIdade(nasc){var h=new Date(),d=new Date(nasc);var i=h.getFullYear()-d.getFullYear();var m=h.getMonth()-d.getMonth();if(m<0||(m===0&&h.getDate()<d.getDate()))i--;return i}
 function ageMonths(nasc){if(!nasc)return NaN;var h=new Date(),d=new Date(nasc);if(isNaN(d.getTime()))return NaN;var m=(h.getFullYear()-d.getFullYear())*12+h.getMonth()-d.getMonth();if(h.getDate()<d.getDate())m--;return m}
-function prazoAuto(nasc){var m=ageMonths(nasc);if(isNaN(m)||m<0||m>=965)return null;return Math.min(965-m,420)}
+function bankNow(){return BANKS[$('s-banco').value]||BANKS.caixa}
+function prazoAuto(nasc){var bk=bankNow(),m=ageMonths(nasc);if(isNaN(m)||m<0||m>=bk.maxM)return null;return Math.min(bk.maxM-m,420)}
 var REF_M2=13000;
 /* ---------- cronograma estilo CAIXA (SBPE/TR): prestação + MIP + DFI + taxa de adm. ---------- */
 function r2(x){return Math.round(x*100)/100}
@@ -625,19 +627,47 @@ function mipRate(age){ // % a.m. sobre saldo devedor
   var a=Math.max(age,25); return 0.012*Math.pow(0.2731/0.012,(a-25)/(63-25));
 }
 function ageAt(nasc,d){var a=d.getFullYear()-nasc.getFullYear();if(d.getMonth()<nasc.getMonth()||(d.getMonth()===nasc.getMonth()&&d.getDate()<nasc.getDate()))a--;return a}
+function ageAtM(nasc,d){return d.getFullYear()-nasc.getFullYear()-(d.getMonth()<nasc.getMonth()?1:0)}
+/* ---------- regras por banco, calibradas em extratos reais (simulação de 17/10/2025, comprador nascido em 14/04/1961) ----------
+   taxa: % a.m. sugerida (null = usa os cenários); dfi: fração do valor do imóvel por mês; tarifa: R$/mês;
+   basis: MIP sobre o saldo 'after' (depois da amortização do mês) ou 'before' (antes); lastIns: seguros também na última parcela;
+   ato: parcela de seguros paga na contratação (entra no total pago); off: 1ª parcela no mês seguinte (1) ou no mês da simulação (0);
+   maxM: idade em meses + prazo; mes: idade pelo mês de aniversário; exact: saldo e amortização sem arredondar a cada mês. */
+function mipItau(age,mb){
+  if(age<=64)return 0.31625; if(age===65)return 0.35033; if(age===66)return 0.34993; if(age===67)return 0.35030;
+  if(age===68)return 0.36632; if(age===69)return 0.40767; if(age===70)return 0.45366; if(age===71)return 0.45220;
+  if(age===72)return 0.50283; if(age===73)return 0.55867; if(age===74)return mb>=6?0.49334:0.62048;
+  if(age===75)return 0.55132; return 0.61616;
+}
+function mipInter(age){return age<=65?0.20246:age<=70?0.33045:age<=75?0.54657:0.88876}
+var BANKS={
+  caixa:{nome:'Caixa',taxa:null,dfi:0.000066,tarifa:25,basis:'after',lastIns:false,ato:false,off:1,maxM:965,mes:false,mip:function(a){return mipRate(a)},maxTxt:'80 anos e 5 meses',
+    info:'MIP por idade (calibrado de 61 a 80 anos), DFI de 0,0066% do imóvel por mês e tarifa de R$ 25.'},
+  santander:{nome:'Santander',taxa:1.0823533,dfi:0.00005,tarifa:25,basis:'after',lastIns:false,ato:true,off:1,maxM:965,mes:false,mip:function(){return 0.384},maxTxt:'80 anos e 5 meses',
+    info:'MIP fixo de 0,384% a.m. (valor máximo cobrado, não varia com a idade), DFI de 0,005% do imóvel e tarifa de R$ 25. Taxa de 1,0823% a.m. (13,79% a.a.), sem relacionamento. Calibrado no extrato de 17/10/2025.'},
+  itau:{nome:'Itaú',taxa:0.9781258,dfi:0.0000554,tarifa:0,basis:'before',lastIns:false,ato:true,off:0,maxM:961,mes:true,exact:true,mip:mipItau,maxTxt:'80 anos na última parcela',
+    info:'MIP por idade sobre o saldo antes da amortização (medido de 64 a 80 anos; abaixo de 64 usa a taxa de 64), DFI de 0,00554% do imóvel e sem tarifa. Taxa de 0,9781% a.m. (12,39% a.a.). Calibrado no extrato de 17/10/2025.'},
+  inter:{nome:'Inter',taxa:0.7916667,dfi:0.000150333,tarifa:25,basis:'before',lastIns:true,ato:false,off:1,maxM:965,mes:true,exact:true,mip:mipInter,maxTxt:'80 anos e 5 meses',
+    info:'MIP por faixa de idade sobre o saldo antes da amortização (medido de 64 a 80 anos; abaixo de 64 usa a faixa até 65), DFI de 0,015% do imóvel e tarifa de R$ 25. Taxa nominal de 9,5% a.a. (0,7917% a.m.). Prazo máximo de idade não confirmado no extrato. Calibrado no extrato de 17/10/2025.'}
+};
 function sched(opt){ // sistema PRICE|SAC
+  var bk=opt.bk||BANKS.caixa;
   var pv=opt.saldo,i=opt.i,n=opt.n,out=[],s=pv,tot=0;
-  var pm=opt.sis==='PRICE'?r2(pv*i*Math.pow(1+i,n)/(Math.pow(1+i,n)-1)):0, am=r2(pv/n);
+  var pm=opt.sis==='PRICE'?r2(pv*i*Math.pow(1+i,n)/(Math.pow(1+i,n)-1)):0, am=bk.exact?pv/n:r2(pv/n);
+  var ageF=bk.mes?ageAtM:ageAt, dfiV=r2(opt.valor*bk.dfi), ato=0;
   for(var k=1;k<=n;k++){
-    var d=new Date(opt.start.getFullYear(),opt.start.getMonth()+k,opt.start.getDate());
+    var d=new Date(opt.start.getFullYear(),opt.start.getMonth()+k-1+bk.off,opt.start.getDate());
     var juros=r2(s*i),prest,saldoN;
     if(k===n){prest=r2(s+juros);saldoN=0}
-    else if(opt.sis==='PRICE'){prest=pm;saldoN=r2(s*(1+i)-prest)}
-    else{prest=r2(am+juros);saldoN=r2(s-am)}
-    var mip=k===n?0:r2(saldoN*mipRate(ageAt(opt.nasc,d))/100), dfi=k===n?0:r2(opt.valor*0.000066), enc=r2(prest+mip+dfi+25);
-    out.push({k:k,prest:prest,mip:mip,dfi:dfi,enc:enc,saldo:saldoN});tot+=enc;s=saldoN;
+    else if(opt.sis==='PRICE'){prest=pm;saldoN=bk.exact?s*(1+i)-prest:r2(s*(1+i)-prest)}
+    else{prest=r2(am+juros);saldoN=bk.exact?s-am:r2(s-am)}
+    var rate=bk.mip(ageF(opt.nasc,d),(d.getMonth()-opt.nasc.getMonth()+12)%12);
+    if(k===1&&bk.ato)ato=r2(pv*rate/100)+dfiV;
+    var base=bk.basis==='before'?s:saldoN, noIns=(k===n&&!bk.lastIns);
+    var mip=noIns?0:r2(base*rate/100), dfi=noIns?0:dfiV, enc=r2(prest+mip+dfi+bk.tarifa);
+    out.push({k:k,prest:prest,mip:mip,dfi:dfi,enc:enc,saldo:r2(saldoN)});tot+=enc;s=saldoN;
   }
-  return {rows:out,tot:r2(tot),first:out[0],last:out[n-1]};
+  return {rows:out,tot:r2(tot+ato),ato:ato,first:out[0],last:out[n-1]};
 }
 
 
@@ -732,9 +762,9 @@ function ageInfo(){
   chip.classList.remove('bad');
   if(!nasc||isNaN(m)||m<0){chip.textContent='—';h.textContent='Preencha a data de nascimento para calcular o prazo máximo.';return}
   var a=Math.floor(m/12);chip.textContent=a+' anos';
-  if(m>=965){chip.classList.add('bad');h.textContent='Não elegível: idade mais prazo não pode passar de 80 anos e 5 meses.';return}
+  if(m>=bankNow().maxM){chip.classList.add('bad');h.textContent='Não elegível: idade mais prazo não pode passar de '+bankNow().maxTxt+'.';return}
   var mx=prazoAuto(nasc);
-  h.textContent='Prazo máximo para este comprador: '+mx+' meses ('+(Math.round(mx/12*10)/10).toLocaleString('pt-BR')+' anos). Idade mais prazo até 80 anos e 5 meses, limite de 420 meses.';
+  h.textContent='Prazo máximo para este comprador: '+mx+' meses ('+(Math.round(mx/12*10)/10).toLocaleString('pt-BR')+' anos). Idade mais prazo até '+bankNow().maxTxt+', limite de 420 meses.';
 }
 function simular(){
   refreshWA();ageInfo();
@@ -761,14 +791,14 @@ function simular(){
   if(!ready){schedImg();return}
 
   var idade=calcIdade(nasc);
-  if(ageMonths(nasc)>=965){$('inel').hidden=false;['res','fin','scr'].forEach(function(id){$(id).hidden=true});return}
+  if(ageMonths(nasc)>=bankNow().maxM){$('inel').hidden=false;['res','fin','scr'].forEach(function(id){$(id).hidden=true});return}
 
   var pz=parseInt($('s-prazo').value,10), pzMax=prazoAuto(nasc)||420;
   if(!(pz>0)){pz=pzMax;}
   pz=Math.min(pz,pzMax,420);
   var taxa=getTaxa(), i=taxa/100, saldo=valor-ent, n=pz;
   var nascD=new Date(nasc+'T12:00:00'), hoje=new Date();
-  var SP=sched({sis:'PRICE',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor}), SS=sched({sis:'SAC',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor});
+  var SP=sched({sis:'PRICE',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor,bk:bankNow()}), SS=sched({sis:'SAC',saldo:saldo,i:i,n:n,start:hoje,nasc:nascD,valor:valor,bk:bankNow()});
   var pPrice=SP.first.enc, pPriceN=SP.last.enc, totPrice=SP.tot, s1=SS.first.enc, sN=SS.last.enc, totSac=SS.tot;
   var prestP=SP.first.prest, segP=SP.first.enc-SP.first.prest, prestS=SS.first.prest, segS=SS.first.enc-SS.first.prest;
   $('h-ltv').hidden=!(saldo>valor*0.7+1);
@@ -782,6 +812,7 @@ function simular(){
   var cu=curUnit();var deT=(cu&&Math.abs(cu.valor-porVal)<1&&cu.de>cu.valor)?cu.de:0;
   last={jive:Object.assign({},jive),por:porVal,extra:extra,ddMode:ddMode,ddRaw:ddOpen?$('s-dd').value:'',de:deT,nome:$('s-cliente').value.trim(),tel:$('s-tel').value.trim(),unidade:selName(),valor:valor,ent:ent,saldo:saldo,n:n,taxa:taxa,idade:idade,nasc:nasc,area:(cu&&cu.area)||0,
     hosp:hosp,rph:rph,rec:rec,cen:($('s-rph').value&&parseBRL($('s-rph').value)>0)?'manual':renCen,limp:limp,oper:oper,gest:gest,custos:custos,pPrice:pPrice,pPriceN:pPriceN,prestP:prestP,segP:segP,prestS:prestS,segS:segS,s1:s1,sN:sN,totPrice:totPrice,totSac:totSac,liq:liq,yieldA:yieldA,payback:payback,fluxoP:fluxoP,fluxoS:fluxoS,coc:coc};
+  last.banco=$('s-banco').value;last.bancoNome=bankNow().nome;last.tarifa=bankNow().tarifa;last.ato=SP.ato;
   render(last);schedImg();
 }
 function selName(){var s=$('s-unidade');var o=s.options[s.selectedIndex];return o&&o.value?o.textContent.split(' · ')[0]:'a unidade'}
@@ -817,7 +848,7 @@ function render(r){
   $('r-taxa').textContent=r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'%';
   $('t-sac1').textContent=toBRL(r.s1);$('t-sacn').textContent=toBRL(r.sN);$('t-sact').textContent=toBRL(r.totSac);
   $('t-pr1').textContent=toBRL(r.pPrice);$('t-prn').textContent=toBRL(r.pPriceN);$('t-prt').textContent=toBRL(r.totPrice);
-  $('t-eco').textContent='Parcelas com seguros (MIP e DFI) e taxa de administração. 1ª parcela PRICE: prestação de '+toBRL(r.prestP)+' + seguros e taxa de '+toBRL(r.segP)+'. '+(r.totPrice>r.totSac?'O SAC custa '+toBRL(r.totPrice-r.totSac)+' a menos no total, com parcela inicial maior.':'')+' O saldo devedor é corrigido pela TR.';
+  $('t-eco').textContent='Banco: '+r.bancoNome+'. Parcelas com seguros (MIP e DFI)'+(r.tarifa>0?' e tarifa de '+toBRL(r.tarifa):'')+'. 1ª parcela PRICE: prestação de '+toBRL(r.prestP)+' + seguros'+(r.tarifa>0?' e tarifa':'')+' de '+toBRL(r.segP)+'. '+(r.ato>0?'O total pago inclui '+toBRL(r.ato)+' de seguros pagos na contratação. ':'')+(r.totPrice>r.totSac?'O SAC custa '+toBRL(r.totPrice-r.totSac)+' a menos no total, com parcela inicial maior.':'')+' O saldo devedor é corrigido pela TR.';
   $('script').textContent=buildScript(r);
   refreshWA();
 }
@@ -836,7 +867,7 @@ function buildScript(r){
   L.push('*Parcelas estimadas* (taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m. + TR)');
   L.push('PRICE: *começa em* '+toBRL(r.pPrice)+' e *termina em* '+toBRL(r.pPriceN));
   L.push('SAC: *começa em* '+toBRL(r.s1)+' e *termina em* '+toBRL(r.sN));
-  L.push('Parcelas incluem seguros (MIP e DFI) e taxa de administração.');
+  L.push('Parcelas incluem seguros (MIP e DFI)'+(r.tarifa>0?' e taxa de administração':'')+'.');
   var j=r.jive;
   if(j&&j.ok&&j.include){
     L.push('');
@@ -987,6 +1018,7 @@ function renderProps(){
 }
 function openProp(ix){
   var p=props[ix];if(!p)return;
+  $('s-banco').value=p.banco||'caixa';$('bk-info').textContent=bankNow().info;
   $('s-cliente').value=p.nome||'';$('s-tel').value=p.tel||'';$('s-nasc').value=p.nasc||'';
   setMoney('s-valor',p.por||p.valor);setMoney('s-entrada',p.ent);setMoney('s-custos',p.custos);
   $('s-hosp').value=p.hosp||'';$('s-gestao').value=p.gest;$('s-limp').value=p.limp;setMoney('s-oper',p.oper);
@@ -1060,7 +1092,7 @@ function drawSim(r){
   var cw=(CW-72)/3;cols.forEach(function(k,i){var px=P+36+i*cw;t(k[0],px,cy+22,fb(600,21),MUT);t(k[1],px,cy+66,fb(800,32),INK);t(k[2],px,cy+98,fb(500,20),MUT)});
   y+=h1+24;
   // parcelas
-  var h2=330;card(h2);lab('PARCELAS ESTIMADAS',y+56);t('taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m. + TR',P+CW-36,y+56,fb(600,21),MUT,'right');t('Inclui seguros (MIP e DFI) e taxa de administração',P+36,y+h2-26,fb(500,20),MUT);
+  var h2=330;card(h2);lab('PARCELAS ESTIMADAS',y+56);t('taxa '+r.taxa.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+'% a.m. + TR',P+CW-36,y+56,fb(600,21),MUT,'right');t('Inclui seguros (MIP e DFI)'+(r.tarifa>0?' e taxa de administração':''),P+36,y+h2-26,fb(500,20),MUT);
   var bw=(CW-72-24)/2;
   [['PRICE','1ª parcela',toBRL(r.pPrice),'termina em '+toBRL(r.pPriceN)],['SAC','1ª parcela',toBRL(r.s1),'termina em '+toBRL(r.sN)]].forEach(function(b,i){var bx=P+36+i*(bw+24),by=y+84;rr(bx,by,bw,184,20,'#EEF3F8');t(b[0],bx+28,by+44,fb(800,22),BLUE,'left','2px');t(b[2],bx+28,by+108,fd(58),INK);t(b[3]||b[1],bx+28,by+150,fb(600,22),MUT);if(b[3])t(b[1],bx+bw-28,by+44,fb(600,20),MUT,'right')});
   y+=h2+24;
@@ -1152,6 +1184,14 @@ document.addEventListener('input',function(e){
   }
 });
 $('s-unidade').addEventListener('change',function(){applyUnit();simular()});
+$('s-banco').addEventListener('change',function(){
+  var bk=bankNow();$('bk-info').textContent=bk.info;
+  $('s-taxa').value=bk.taxa==null?'':String(bk.taxa);
+  document.querySelectorAll('#seg-taxa button').forEach(function(b){b.setAttribute('aria-pressed',String(bk.taxa==null&&b.dataset.t===taxaSel))});
+  var a=prazoAuto($('s-nasc').value),cur=parseInt($('s-prazo').value,10);
+  if(a&&(!cur||cur>a||autoPrazo))$('s-prazo').value=a;
+  simular();
+});
 $('seg-taxa').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setTaxa(b.dataset.t)});
 $('b-auto').addEventListener('click',function(){autoPrazo=true;var a=prazoAuto($('s-nasc').value);$('s-prazo').value=a||'';simular()});
 $('b-reset').addEventListener('click',resetAll);
@@ -1214,6 +1254,7 @@ $('s-unidade').value='u-a-307';
 if(!$('s-unidade').value)$('s-unidade').value='';
 applyUnit();
 $('s-prazo').value=prazoAuto($('s-nasc').value)||'';
+$('bk-info').textContent=bankNow().info;
 var h=(location.hash||'').replace('#','');
 var sm=null;try{sm=localStorage.getItem('send-cooliving-mode')}catch(e){}
 setMobile(h==='mob'||(sm?sm==='mob':window.innerWidth<700));
